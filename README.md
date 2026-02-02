@@ -1,1 +1,15 @@
 # Hynet-FullStack-App
+
+## Backend setup
+
+### Run Local
+
+```
+cd backend/src
+
+# activate virtual env
+
+python -m venv venv
+source venv/bin/activate
+
+```
