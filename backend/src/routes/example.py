@@ -2,6 +2,8 @@ from typing import Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
+import powerfactory as pf
+app = pf.GetApplication()   
 
 router = APIRouter(prefix="/example", tags=["Example / PowerFactory"])
 
@@ -131,6 +133,81 @@ async def generate_random_cases(body: RandomCasesRequest):
 @router.post("/run-n2-contingencies")
 async def run_n2_contingencies():
     """Run N-2 contingency simulations (from Random Cases.csv)."""
+    import time
+    import os
+    import pandas as pd
+
+    time_start = time.time()
+
+    Lines = app.GetCalcRelevantObjects("*.ElmLne")
+    Ldf = app.GetFromStudyCase('ComLdf')   # Get commands of calculating load flow
+    Init = app.GetFromStudyCase('ComInc')  # Get commands of calculating initial conditions
+    Sim = app.GetFromStudyCase('ComSim')   # Get commands of running simulations
+    ElmRes = app.GetFromStudyCase('Results.ElmRes')  # Create class of result variables named "Results"
+    ComRes = app.GetFromStudyCase('ComRes')  # Get commands of export results
+    Events_folder = app.GetFromStudyCase('IntEvt')  # Get events folder
+
+    start = 0
+
+    end = 1000
+    
+    EventSet = Events_folder.GetContents()
+    Outage1 = EventSet[0]
+    Outage2 = EventSet[1]
+    Outage1.outserv = 0
+    Outage2.outserv = 0 # switch on the outage event
+
+
+    data = pd.read_csv("Random Cases.csv", header=None)
+    list=data.values.tolist()
+    # app.PrintPlain(list[0])
+    # app.PrintPlain(list[0][1])
+    # app.PrintPlain(len(list))
+
+
+    for i in range(start, end) :
+
+        app.PrintPlain(i)
+        app.PrintPlain(list[i][1:3])
+
+
+        # Init.Execute()
+        #lines1 = np.array(lines)
+
+        for item in Lines:
+            if item.loc_name == list[i][1]:
+                Outage1.p_target = item # event target is the each line
+                Outage1.time = 1.0  # starts at t= 1s
+                Outage1.i_what = 0  # take the element out of service
+            if item.loc_name == list[i][2]:
+                Outage2.p_target = item
+                Outage2.time = 1.0  # starts at t= 1s
+                Outage2.i_what = 0  # take the element out of service
+
+        Sim.tstop = 300 # simulation time = 300s
+
+        Init.Execute()
+        Sim.Execute()
+        
+        Ldf.Execute()
+
+        time_end = time.time()
+        # with open("readme2.csv", 'a', newline='') as csvfile:
+        #     writer = csv.writer(csvfile)
+        #     writer.writerow([i, list[i][1:3], time_end - time_start])
+        Window = app.GetOutputWindow()
+
+        Path= r'C:\Users\DayDay\OneDrive - University of Manchester\Yitian\Matpower\0.65\%i-%i.txt'%(start, i)
+        # Path= r'C:\Users\44756\OneDrive - UOM\Yitian\Matpower\%i-%i.txt'%(start, i)
+        
+
+        Window.Save(Path)
+        #app.ClearOutputWindow()
+        
+        if (i - start) > 0 : 
+            Path_old= r'C:\Users\DayDay\OneDrive - University of Manchester\Yitian\Matpower\0.65\%i-%i.txt'%(start, i - 1)
+            # Path_old= r'C:\Users\44756\OneDrive - UOM\Yitian\Matpower\%i-%i.txt'%(start, i - 1)
+            os.remove(Path_old)
     return {"action": "RunN2Contingencies", "status": "accepted"}
 
 
