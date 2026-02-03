@@ -12,4 +12,7 @@ cd backend/src
 python -m venv venv
 source venv/bin/activate
 
+fastapi dev main.py
+or 
+python main.py
 ```
