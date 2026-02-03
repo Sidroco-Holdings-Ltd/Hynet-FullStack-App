@@ -1,42 +1,334 @@
-#root {
-  max-width: 1280px;
+/* HYNET project styling – https://hynet-project.eu */
+
+.app {
+  min-height: 100vh;
+  padding: 0 1.5rem 2rem;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----- Top bar (HYNET-style header) ----- */
+.header {
+  background: var(--header-bg);
+  color: #fff;
+  margin: 0 -1.5rem 2rem -1.5rem;
+  padding: 2rem 1.5rem 2.25rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.header .brand {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.header .tagline {
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.35rem 0;
+  opacity: 0.95;
+  text-transform: uppercase;
+  color: var(--hynet-orange);
+}
+
+.header .subtitle {
+  font-size: 0.875rem;
+  margin: 0;
+  opacity: 0.75;
+  font-weight: 400;
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    color: var(--hynet-text);
   }
-  to {
-    transform: rotate(360deg);
+}
+
+/* ----- Main layout ----- */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+/* ----- Section cards (HYNET TECHNOLOGIES / DEMOS style) ----- */
+.section {
+  background: var(--hynet-bg);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--hynet-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--hynet-blue);
+  border-radius: 8px 0 0 8px;
+}
+
+.section:nth-child(even)::before {
+  background: var(--hynet-orange);
+}
+
+.section h2 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 1rem 0;
+  color: var(--hynet-navy);
+  padding-left: 0.35rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .section {
+    background: var(--hynet-bg-subtle);
+    border-color: var(--hynet-border);
+  }
+  .section::before {
+    background: var(--hynet-blue);
+  }
+  .section:nth-child(even)::before {
+    background: var(--hynet-orange);
+  }
+  .section h2 {
+    color: var(--hynet-navy);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* ----- Actions ----- */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.row label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--hynet-text-muted);
+  min-width: 5.5rem;
+}
+
+.row input[type="text"],
+.row input[type="number"] {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--hynet-border);
+  background: var(--hynet-bg);
+  color: var(--hynet-text);
+  font-size: 0.9rem;
+  font-family: inherit;
+  min-width: 9rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.row input[type="text"]:focus,
+.row input[type="number"]:focus {
+  outline: none;
+  border-color: var(--hynet-blue);
+  box-shadow: 0 0 0 3px rgba(0, 51, 153, 0.12);
+}
+
+.row input[type="number"] {
+  min-width: 5rem;
+}
+
+.row select {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--hynet-border);
+  background: var(--hynet-bg);
+  color: var(--hynet-text);
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.row select:focus {
+  outline: none;
+  border-color: var(--hynet-blue);
+}
+
+/* ----- Buttons (Learn more / Read more style) ----- */
+.row button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s;
+  background: var(--hynet-orange);
+  color: #fff;
+}
+
+.row button:hover:not(:disabled) {
+  background: var(--hynet-orange-hover);
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 8px rgba(232, 93, 4, 0.35);
+}
+
+.row button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.row button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.row button.btn-outline {
+  background: transparent;
+  color: var(--hynet-text);
+  border: 1px solid var(--hynet-border);
+}
+
+.row button.btn-outline:hover:not(:disabled) {
+  background: var(--hynet-bg-subtle);
+  border-color: var(--hynet-text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  .row button {
+    background: var(--hynet-orange);
+    color: #fff;
+  }
+  .row button.btn-outline {
+    color: var(--hynet-text);
+    border-color: var(--hynet-border);
+  }
+  .row button.btn-outline:hover:not(:disabled) {
+    background: var(--hynet-bg-subtle);
   }
 }
 
-.card {
-  padding: 2em;
+/* ----- Result section ----- */
+.result-section {
+  margin-top: 0.25rem;
 }
 
-.read-the-docs {
-  color: #888;
+.result-section h2 {
+  margin-bottom: 0.75rem;
+}
+
+.result-section .result,
+.result-section pre.result {
+  margin: 0;
+  padding: 1.25rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
+}
+
+.result-section .result.success,
+.result-section pre.result.success {
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: var(--hynet-text);
+}
+
+@media (prefers-color-scheme: dark) {
+  .result-section .result.success,
+  .result-section pre.result.success {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+}
+
+.result-section .result.error,
+.result-section pre.result.error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #b91c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+  .result-section .result.error,
+  .result-section pre.result.error {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+  }
+}
+
+.result-section .status {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.result-section .status.loading {
+  color: var(--hynet-blue);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.result-section .status.loading::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0, 51, 153, 0.25);
+  border-top-color: var(--hynet-blue);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.result-section .status.muted {
+  color: var(--hynet-text-muted);
+  font-style: italic;
+}
+
+/* ----- Footer (HYNET project / accreditation style) ----- */
+.footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--hynet-border);
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--hynet-text-muted);
+}
+
+.footer a {
+  color: var(--hynet-blue);
+  font-weight: 500;
+}
+
+.footer a:hover {
+  color: var(--hynet-orange);
+}
+
+.footer-sep {
+  margin: 0 0.5rem;
+  opacity: 0.6;
 }
